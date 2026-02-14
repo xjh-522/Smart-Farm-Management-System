@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itbaizhan.farm_system.mapper.Rolemapper">
+
+
+    <select id="findRolepermission" resultType="java.lang.Long">
+        select permission_id from sys_role_permission where role_id=#{roleId}
+    </select>
+
+    <delete id="deleteRolePermissionsByRoleIds">
+        delete from sys_role_permission where role_id IN
+        <foreach item="roleId" collection="roleIds"
+                 open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteUserRolesByRoleIds">
+        delete from sys_user_role where role_id IN
+        <foreach item="roleId" collection="roleIds"
+                 open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </delete>
+
+    <select id="selectRoleUserIds" resultType="java.lang.Long">
+        select user_id from sys_user_role where role_id=#{roleId}
+    </select>
+
+    <select id="selectRolePermissionIds" resultType="java.lang.Long">
+        select permission_id from sys_role_permission where role_id= #{roleId}
+    </select>
+
+    <insert id="insertRolePermissions">
+        insert into sys_role_permission(role_id,permission_id) values
+        <foreach item="permissionId" collection="permissionIds"
+                 separator=",">
+            (#{roleId},#{permissionId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteUserRolesByRoleIdAndUserIds">
+        delete from sys_user_role where role_id=#{roleId} and user_id IN
+        <foreach item="userId" collection="userIds"
+                 open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <select id="countUserRoleExists" resultType="int">
+        select count(*) from sys_user_role where role_id=#{roleId} and user_id=#{userId}
+    </select>
+
+    <insert id="insertUserRole">
+        insert into sys_user_role(user_id,role_id) values
+        (#{userId},#{roleId})
+    </insert>
+
+</mapper>

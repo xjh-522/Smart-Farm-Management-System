@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itbaizhan.farm_system.mapper.Usermapper">
+    <delete id="deleteUserRole">
+        delete from sys_user_role where user_id IN
+        <foreach item="userId" collection="userIds"
+                 open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+
+    </delete>
+
+
+    <select id="selectUserRole" resultType="java.lang.Long">
+        select role_id from sys_user_role where user_id=#{userId}
+    </select>
+
+    <insert id="addUserRole" >
+        insert into sys_user_role(user_id,role_id) values
+        <foreach item="roleId" collection="roleIds"
+                 separator=",">
+            (#{userId},#{roleId})
+        </foreach>
+    </insert>
+
+    <select id="selectPermissionByusername" resultType="com.itbaizhan.farm_system.entity.Permission" parameterType="string">
+        SELECT DISTINCT
+            sys_permission.*
+        FROM
+            sys_user
+                LEFT JOIN sys_user_role ON sys_user.user_id = sys_user_role.user_id
+                LEFT JOIN sys_role ON sys_user_role.role_id = sys_role.role_id
+                LEFT JOIN sys_role_permission ON sys_role.role_id = sys_role_permission.role_id
+                LEFT JOIN sys_permission ON sys_role_permission.permission_id = sys_permission.permission_id
+        WHERE
+            sys_user.user_name = #{username}
+    </select>
+
+</mapper>
