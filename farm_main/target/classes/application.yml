@@ -1,0 +1,43 @@
+# ???
+server:
+  port: 8080
+
+# ????
+logging:
+  pattern:
+    console: '%d{HH:mm:ss.SSS} %clr(%-5level) ---  [%-15thread] %cyan(%-50logger{50}):%msg%n'
+
+spring:
+  application:
+    name: farm_main # ???
+  # ???
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql:///baizhanfarm?serverTimezone=UTC
+    username: root
+    password: root
+
+cache:
+  # redis
+  redis:
+    host: localhost    # Redis服务器地址
+    port: 6379      # Redis服务器端口
+    password:       # Redis密码，没有则不配置
+    timeout: 3000ms    # 连接超时时间
+# ??Mybatis-plus
+mybatis-plus:
+  global-config:
+    db-config:
+      # ?????????
+      id-type: auto
+  configuration:
+    map-underscore-to-camel-case: true # ??????????????
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # ??sql??
+# JWT配置
+jwt:
+  # JWT密钥
+  secret: myVeryLongSecretKeyForJWTTokenGenerationThatMustBeLongEnoughForSecurity123456789
+  # JWT过期时间（秒）7天 = 7 * 24 * 60 * 60 = 604800
+  expiration: 604800
+
+
